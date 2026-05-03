@@ -33,6 +33,7 @@
                 linear-gradient(180deg, var(--bg), var(--bg-alt));
     color: var(--text);
     min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -44,8 +45,10 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 50vh);
+    grid-template-rows: repeat(2, 50dvh);
     width: 100vw;
     min-height: 100vh;
+    min-height: 100dvh;
     background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 35%);
   }
 
@@ -172,6 +175,8 @@
   }
 
   /* === RESPONSIVE === */
+
+  /* Tablette : 5 colonnes mais hauteur libérée */
   @media (max-width: 1100px) {
     .grid {
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -180,23 +185,61 @@
     .grid-cell { aspect-ratio: 2 / 3; }
   }
 
+  /* Mobile : passage en 2 colonnes × 5 lignes pour que les flacons restent lisibles */
   @media (max-width: 700px) {
     .grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      grid-template-rows: repeat(2, auto);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(5, auto);
+      min-height: 100vh;
+      min-height: 100dvh;
     }
     .grid-cell { aspect-ratio: 2 / 3; }
+
+    /* Réinitialise l'alternance clair/foncé fondée sur la disposition desktop */
+    .grid-cell:nth-child(-n+5) img,
+    .grid-cell:nth-child(n+6) img {
+      filter: none;
+    }
+    /* Nouvelle alternance adaptée à la grille 2×5 */
+    .grid-cell:nth-child(odd) img {
+      filter: brightness(1.15) contrast(1.08);
+    }
+    .grid-cell:nth-child(even) img {
+      filter: brightness(0.85) contrast(0.95);
+    }
+
+    .overlay {
+      padding: 16px;
+      align-items: center;
+    }
     .message-box {
-      padding: 48px 30px;
+      padding: 40px 26px;
       width: 100%;
+      max-width: 420px;
+      box-shadow: 0 16px 50px var(--shadow), 0 0 0 1px rgba(29, 132, 255, 0.08);
     }
     .message {
-      font-size: 21px;
+      font-size: 20px;
+      line-height: 1.45;
+      margin-bottom: 28px;
     }
     .brand {
       font-size: 11px;
       letter-spacing: 0.28em;
+      margin-bottom: 22px;
     }
+    .divider {
+      margin-bottom: 24px;
+    }
+    .signature {
+      font-size: 10px;
+    }
+  }
+
+  /* Très petits écrans (< 380px) : on resserre encore */
+  @media (max-width: 380px) {
+    .message-box { padding: 32px 20px; }
+    .message { font-size: 18px; }
   }
 </style>
 </head>
